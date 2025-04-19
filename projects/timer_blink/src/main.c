@@ -1,5 +1,7 @@
-#include <stdint.h>
 #include "stm32f4xx.h"
+#include "system_stm32f4xx.h"
+
+#define LED_PIN 5
 
 void Timer2_Init(void);
 void GPIO_Init(void);
@@ -7,13 +9,14 @@ void GPIO_Init(void);
 volatile uint32_t timer_flag = 0;
 
 int main(void) {
+    SystemInit(); // Initialize the system clock
     GPIO_Init();
     Timer2_Init();
 
     while (1) {
         if (timer_flag) {
             timer_flag = 0;
-            GPIOA->ODR ^= (1 << 5); // Toggle PA5 (LED)
+            GPIOA->ODR ^= (1 << LED_PIN); // Toggle PA5 (LED)
         }
     }
 }
@@ -30,7 +33,7 @@ void Timer2_Init(void) {
 
 void GPIO_Init(void) {
     RCC->AHB1ENR |= RCC_AHB1ENR_GPIOAEN; // Enable GPIOA clock
-    GPIOA->MODER |= (1 << (5 * 2)); // Set PA5 as output
+    GPIOA->MODER |= (1 << (LED_PIN * 2)); // Set PA5 as output
 }
 
 void TIM2_IRQHandler(void) {

@@ -25,7 +25,9 @@ OBJS += $(SRCS:%.s=$(BUILD_DIR)/%.o)
 
 # Flags
 CFLAGS = -mcpu=cortex-m4 -mthumb -Wall -g -O0 -I$(INCLUDE_DIR)
+CFLAGS += -DSTM32F401xE
 LDFLAGS = -T$(LINKER_DIR)/STM32F4xx.ld
+LDFLAGS += -Llib/Drivers/STM32F4xx_HAL_Driver -lstm32f4xx_hal
 
 # Rules
 all: $(BUILD_DIR)/$(TARGET).elf
